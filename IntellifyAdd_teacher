@@ -1,0 +1,42 @@
+<?php
+class IntellifyAdd_teacher extends CI_Controller{
+	function index(){
+		$this->load->view('Register_teacher');
+		
+	}
+	 function form_validation(){
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules("Name","Name",'required');
+		$this->form_validation->set_rules("School_name","School_name",'required|alpha');
+		$this->form_validation->set_rules("Class","class",'required|alpha_numeric');
+		//$this->form_validation->set_rules("","Name",'required|alpha');
+		$this->form_validation->set_rules("Email","Email",'required|valid_email');//
+		$this->form_validation->set_rules("Number","Number",'required|regex_match[/^[0-9]{10}$/]');
+		$this->form_validation->set_rules("Gender","Gender",'required');
+		if($this->form_validation->run())
+		{
+			$this->load->model('Model_Add_Teacher');
+			$data = array(
+				"Name" =>$this->input->post("Name"),
+				"Number" =>$this->input->post("Number"),
+				"Email" =>$this->input->post("Email"),
+				"School_name" =>$this->input->post("School_name"),
+				"Class" =>$this->input->post("Class"),
+				"Gender" =>$this->input->post("Gender"));
+
+			$this->Model_Add_Teacher->insert_data($data);
+			echo "Data inserted";
+			//redirect(base_url()."IntellifyAdd_student/inserted");
+
+		}
+		else{
+			$this->index();
+		}
+	}
+
+/*public function inserted(){
+$this->index();
+}*/
+}	
+
+?>
